@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="referrer" content="no-referrer">
+<title>Accès protégé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#072c5e; --navy-d:#041a3a; --accent:#005ead;
+    --ink:#15233a; --muted:#5b6b80; --line:#e7ecf3; --soft:#f6f9fc;
+    --e:cubic-bezier(.4,0,.2,1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:'Montserrat',system-ui,-apple-system,sans-serif; color:var(--ink);
+    background:var(--soft); display:flex; align-items:center; justify-content:center; padding:24px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(135deg,var(--navy-d) 0%,var(--navy) 55%,#0b3a72 100%)}
+  .bg span{position:absolute;border-radius:9999px;border:1px solid rgba(255,255,255,.08)}
+  .bg span:nth-child(1){width:520px;height:520px;top:-160px;right:-120px}
+  .bg span:nth-child(2){width:340px;height:340px;bottom:-90px;left:-70px}
+  .bg span:nth-child(3){width:760px;height:760px;top:50%;left:50%;transform:translate(-50%,-50%)}
+  .wrap{position:relative;z-index:1;width:100%;max-width:430px}
+  .card{background:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 1px 2px rgba(0,40,86,.06),0 24px 60px -20px rgba(0,27,61,.55)}
+  .logo{display:block;height:38px;width:auto;margin:0 auto 22px}
+  h1{margin:0 0 6px;font-size:20px;font-weight:800;letter-spacing:-.01em;text-align:center}
+  .sub{margin:0 0 24px;font-size:13.5px;line-height:1.55;color:var(--muted);text-align:center}
+  label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--navy)}
+  .field{display:flex;gap:8px}
+  input[type=password],input[type=text]{
+    flex:1;min-width:0;font:inherit;font-size:15px;padding:11px 13px;border:1px solid #c3cedc;border-radius:12px;
+    background:#fff;color:inherit;transition:border-color .2s var(--e),box-shadow .2s var(--e);
+  }
+  input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(10,111,184,.18)}
+  .peek{flex:0 0 auto;width:44px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--muted);cursor:pointer;display:grid;place-items:center}
+  .peek:hover{color:var(--accent);border-color:var(--accent)}
+  .submit{
+    width:100%;margin-top:16px;min-height:46px;font:inherit;font-size:15px;font-weight:700;color:#fff;background:var(--navy);
+    border:0;border-radius:12px;cursor:pointer;transition:transform .2s var(--e),box-shadow .2s var(--e),background-color .2s var(--e);
+  }
+  .submit:hover:not(:disabled){transform:translateY(-2px);background:var(--navy-d);box-shadow:0 8px 22px -6px rgba(0,40,86,.55)}
+  .submit:active:not(:disabled){transform:scale(.99)}
+  button.submit:disabled{opacity:.6;cursor:progress}
+  .msg{margin:14px 0 0;font-size:13.5px;line-height:1.5;min-height:20px;text-align:center;color:#c2261f;font-weight:600}
+  .msg[data-tone=info]{color:var(--muted);font-weight:500}
+  .detail{margin:6px 0 0;font-size:11.5px;line-height:1.45;color:var(--muted);text-align:center;word-break:break-word}
+  .detail:empty,.msg:empty{display:none}
+  [hidden]{display:none!important}
+  .notice p{margin:0;font-size:14.5px;line-height:1.55;text-align:center}
+  .notice .actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+  .notice .submit{display:flex;align-items:center;justify-content:center;margin-top:0;text-decoration:none}
+  .notice .submit.secondary{background:#fff;color:var(--navy);border:1px solid #c3cedc}
+  .notice .submit.secondary:hover{background:var(--soft);color:var(--navy)}
+  .notice .url{margin-top:12px;font-size:12.5px;color:var(--muted);word-break:break-all;user-select:all;-webkit-user-select:all}
+  .foot{margin-top:18px;text-align:center;font-size:12px;line-height:1.55;color:rgba(255,255,255,.62)}
+  noscript{display:block;margin-top:16px;font-size:13.5px;color:#c2261f;text-align:center}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<div class="wrap">
+  <main class="card">
+    <img class="logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTMzOSIgaGVpZ2h0PSI1MzM5IiB2aWV3Qm94PSItMjE0IC0xNDQ5IDUzMzkgNTMzOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0xMTc1LjA4IDEzMDcuMTZMMTU3Ni45NCAxMjY3LjU4TDE5OTAuODEgMC4xNzM4MjhIMTA0Ni45Qzg0MS4xNDcgMC4xNzM4MjggNjU5LjAyIDEzMy4wNzggNTk2LjIxMSAzMjguNzlMMTAuNjQ3MSAyMTU0LjM5Qy0zNC44MzU1IDIyOTYuMzYgNzEuMDkyNyAyNDQxLjQ3IDIyMC4xNDIgMjQ0MS40N0g4NTAuMjA0QzEwNTQuOTcgMjQ0MS40NyAxMjM2LjUxIDIzMDkuNzQgMTMwMC4xMSAyMTE1LjIxTDE1NjkuODUgMTI4OS4yNEwxMTc1LjA4IDEzMDcuMTZaIiBmaWxsPSIjMDA2QUZGIi8+DQo8cGF0aCBkPSJNMzA4NS40NiAxMTE4Ljc1TDM0NTAuOSAwSDI1MDYuOTlDMjMwMS4yMyAwIDIxMTkuMTEgMTMyLjkwNCAyMDU2LjMgMzI4LjYxN0wxNzYwLjk2IDEyNDkuMjlMMzA4NS40NiAxMTE4Ljc1WiIgZmlsbD0iIzAwNkFGRiIvPg0KPHBhdGggZD0iTTE3NTAuOTIgMTI4MC45NkwxNDcwLjc0IDIxNTQuMTlDMTQyNS4yNiAyMjk2LjE1IDE1MzEuMTkgMjQ0MS4yNiAxNjgwLjI0IDI0NDEuMjZIMjMxMC4zQzI1MTUuMDcgMjQ0MS4yNiAyNjk2LjYgMjMwOS41MyAyNzYwLjIgMjExNUwzMDUxLjggMTIyMi4wOUwxNzUwLjkyIDEyODAuNzZWMTI4MC45NloiIGZpbGw9IiMwMDZBRkYiLz4NCjxwYXRoIGQ9Ik00NTk0LjM0IDk2OS45MDFMNDkxMS4xNCAwSDM5NjcuMjNDMzc2MS40NyAwIDM1NzkuMzUgMTMyLjkwNCAzNTE2LjU0IDMyOC42MTdMMzI2OS4wNCAxMTAwLjQ0TDQ1OTQuMzQgOTY5LjcwNFY5NjkuOTAxWiIgZmlsbD0iIzAwNkFGRiIvPg0KPHBhdGggZD0iTTMyMzIuMzEgMTIxNC4yNkwyOTMwLjY3IDIxNTQuNDNDMjg4NS4xOCAyMjk2LjM5IDI5OTEuMTEgMjQ0MS41IDMxNDAuMTYgMjQ0MS41SDM3NzAuMjJDMzk3NC45OSAyNDQxLjUgNDE1Ni41MyAyMzA5Ljc4IDQyMjAuMTMgMjExNS4yNUw0NTMzLjU4IDExNTUuMzlMMzIzMi4zMSAxMjE0LjI2WiIgZmlsbD0iIzAwNkFGRiIvPg0KPC9zdmc+DQo=" alt="Playwiz">
+    <h1>Calendrier de l’Avent — maquette</h1>
+    <p class="sub">Maquette de démonstration — document de travail confidentiel.<br>Saisissez le mot de passe qui vous a été communiqué.</p>
+
+    <form id="f" autocomplete="off">
+      <label for="pwd">Mot de passe</label>
+      <div class="field">
+        <input id="pwd" name="pwd" type="password" autocomplete="current-password" autocapitalize="off" spellcheck="false" required>
+        <button type="button" class="peek" id="peek" aria-label="Afficher le mot de passe">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <button type="submit" class="submit" id="go">Accéder à la maquette</button>
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+      <p class="detail" id="detail"></p>
+    </form>
+    <!-- Hors du formulaire : quand le navigateur ne peut pas déchiffrer, le formulaire
+         disparaît et CE bloc explique pourquoi. Il vivait dans le formulaire, et
+         disparaissait avec lui : un écran sans champ ni explication. -->
+    <div class="notice" id="notice" role="alert" hidden>
+      <p id="notice-txt"></p>
+      <div class="actions" id="notice-actions" hidden>
+        <a class="submit" id="safari" href="#">Ouvrir dans Safari</a>
+        <button type="button" class="submit secondary" id="copy">Copier le lien</button>
+      </div>
+      <p class="url" id="url" hidden></p>
+    </div>
+    <noscript>Cet espace nécessite JavaScript : le contenu est chiffré et déchiffré dans votre navigateur.</noscript>
+  </main>
+  <p class="foot">Contenu chiffré (AES-256-GCM), déchiffré dans votre navigateur.<br>Maquette Playwiz — proposition Metasense, non officielle.</p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var BASE = '/maquette-c26/', DB = 'preview-c26', SALT = 'eRpQoRgw94l7RSzCVcG8gg==', ITER = 600000;
+  var GUARD = 'preview.boot';
+  var SW_REPONSE_MS = 10000;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('f'), pwd = $('pwd'), go = $('go'), peek = $('peek'), msg = $('msg'), detail = $('detail');
+
+  // `tech` : la cause mesurée, en petit sous le message — ce qu'un visiteur peut
+  // recopier ou photographier pour qu'on sache ce qui s'est passé sur SON appareil.
+  function say(text, tone, tech) {
+    msg.textContent = text || '';
+    if (tone) msg.setAttribute('data-tone', tone); else msg.removeAttribute('data-tone');
+    detail.textContent = tech ? 'Détail technique : ' + tech : '';
+  }
+  function b64(s) {
+    var bin = atob(s.replace(/\s+/g, '')), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function nom(e) { return (e && (e.name || e.message)) || 'inconnue'; }
+
+  // Sur iPhone et iPad, Apple réserve les service workers à Safari : Chrome, Firefox,
+  // Edge et les navigateurs intégrés aux applications (Gmail, Instagram…) n'y ont pas
+  // accès. Un iPad se présente comme un Mac, d'où l'écran tactile.
+  function appareilApple() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  function horsService() {
+    form.hidden = true;
+    $('notice').hidden = false;
+    if (!appareilApple()) {
+      $('notice-txt').textContent = "Ce navigateur ne peut pas ouvrir la maquette : le déchiffrement a besoin d’une fenêtre normale (pas de navigation privée) et d’un navigateur récent — Chrome, Edge, Firefox ou Safari.";
+      return;
+    }
+    $('notice-txt').textContent = "Sur iPhone et iPad, cette maquette s’ouvre dans Safari, hors navigation privée : Apple réserve à Safari la technologie qui la déchiffre dans votre téléphone.";
+    $('notice-actions').hidden = false;
+    // `x-safari-https://…` : ouvre l'adresse dans Safari depuis Chrome ou une application (iOS 17 et plus).
+    $('safari').href = 'x-safari-' + location.href;
+    $('copy').addEventListener('click', function () {
+      var url = $('url');
+      url.textContent = location.href;
+      url.hidden = false;
+      var ok = function () { $('copy').textContent = 'Lien copié — collez-le dans Safari'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(location.href).then(ok, function () {});
+      }
+    });
+  }
+
+  if (!window.crypto || !crypto.subtle || !window.indexedDB || !('serviceWorker' in navigator)) {
+    horsService();
+    return;
+  }
+
+  /* ---------------------------------------------------------- IndexedDB */
+
+  function idbOpen() {
+    return new Promise(function (resolve, reject) {
+      var req;
+      try { req = indexedDB.open(DB, 1); } catch (e) { return reject(e); }
+      req.onupgradeneeded = function () {
+        if (!req.result.objectStoreNames.contains('k')) req.result.createObjectStore('k');
+      };
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error); };
+    });
+  }
+  function idbGet() {
+    return idbOpen().then(function (db) {
+      return new Promise(function (resolve) {
+        var g = db.transaction('k', 'readonly').objectStore('k').get('key');
+        g.onsuccess = function () { resolve(g.result || null); db.close(); };
+        g.onerror = function () { resolve(null); db.close(); };
+      });
+    }).catch(function () { return null; });
+  }
+  function idbPut(rec) {
+    return idbOpen().then(function (db) {
+      return new Promise(function (resolve, reject) {
+        var tx = db.transaction('k', 'readwrite');
+        tx.objectStore('k').put(rec, 'key');
+        tx.oncomplete = function () { resolve(); db.close(); };
+        tx.onerror = function () { reject(tx.error); db.close(); };
+      });
+    });
+  }
+  function idbClear() {
+    return idbOpen().then(function (db) {
+      return new Promise(function (resolve) {
+        var tx = db.transaction('k', 'readwrite');
+        tx.objectStore('k').delete('key');
+        tx.oncomplete = tx.onerror = function () { resolve(); db.close(); };
+      });
+    }).catch(function () {});
+  }
+
+  /* -------------------------------------------------------------- crypto */
+
+  // La clé se range en OCTETS BRUTS, jamais en CryptoKey : Safari n'a longtemps pas su
+  // relire dans un service worker une CryptoKey rangée en IndexedDB par la page (WebKit
+  // 183167, corrigé en mars 2024 seulement) — le worker ne trouvait pas de clé, renvoyait
+  // cet écran, et la page bouclait jusqu'à « votre navigateur bloque l'affichage ».
+  // 256 bits PBKDF2 = exactement la clé AES-256 que `deriveKey` produisait (et que build.mjs chiffre).
+  function derive(password) {
+    return crypto.subtle
+      .importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits'])
+      .then(function (base) {
+        return crypto.subtle.deriveBits(
+          { name: 'PBKDF2', salt: b64(SALT), iterations: ITER, hash: 'SHA-256' }, base, 256
+        );
+      })
+      .then(function (bits) { return new Uint8Array(bits); });
+  }
+  function importer(raw) {
+    return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['decrypt']);
+  }
+
+  // Le manifeste chiffré sert de test du mot de passe : s'il se déchiffre, la clé est bonne.
+  function verify(key) {
+    return fetch(BASE + '_p/manifest.bin', { cache: 'no-store' }).then(function (res) {
+      if (!res.ok) throw Object.assign(new Error('manifest ' + res.status), { net: true });
+      return res.arrayBuffer();
+    }).then(function (buf) {
+      var blob = new Uint8Array(buf);
+      return crypto.subtle.decrypt({ name: 'AES-GCM', iv: blob.slice(0, 12) }, key, blob.slice(12));
+    }).then(function (plain) {
+      JSON.parse(new TextDecoder().decode(plain));
+      return true;
+    });
+  }
+
+  /* -------------------------------------------------- service worker + boot */
+
+  function guard() {
+    var raw = null;
+    try { raw = sessionStorage.getItem(GUARD); } catch (e) { return 0; }
+    var st = raw ? JSON.parse(raw) : null;
+    if (!st || Date.now() - st.t > 30000) st = { n: 0, t: Date.now() };
+    st.n += 1; st.t = Date.now();
+    try { sessionStorage.setItem(GUARD, JSON.stringify(st)); } catch (e) {}
+    return st.n;
+  }
+
+  function bloque(raison) {
+    go.disabled = false;
+    say("Votre navigateur bloque l’affichage de la maquette. Essayez une fenêtre normale, ou un autre navigateur.", null, raison);
+  }
+
+  // Le worker actif — en attendant, s'il y en a un, celui qui s'installe : juste après une
+  // mise à jour de sw.js, `ready` rendrait encore l'ancien, qui ne connaît pas le message.
+  function actif(reg) {
+    var w = reg.installing || reg.waiting;
+    if (!w) return Promise.resolve(reg.active);
+    return new Promise(function (resolve) {
+      function suivre() {
+        if (w.state !== 'activated' && w.state !== 'redundant') return;
+        w.removeEventListener('statechange', suivre);
+        resolve(reg.active || null);
+      }
+      w.addEventListener('statechange', suivre);
+      suivre();
+    });
+  }
+
+  // Question au worker, réponse par un canal dédié. `null` : pas de réponse à temps.
+  function parler(worker, message) {
+    return new Promise(function (resolve) {
+      var canal = new MessageChannel(), fini = false;
+      var t = setTimeout(function () { if (!fini) { fini = true; resolve(null); } }, SW_REPONSE_MS);
+      canal.port1.onmessage = function (e) {
+        if (fini) return;
+        fini = true; clearTimeout(t); resolve(e.data || {});
+      };
+      worker.postMessage(message, [canal.port2]);
+    });
+  }
+
+  // On remet la clé au worker et on lui fait CONFIRMER qu'il déchiffre le site AVANT de
+  // recharger. Auparavant on rechargeait à l'aveugle : un worker incapable de servir
+  // renvoyait cet écran, et la seule trace était une boucle de rechargements.
+  function activate(raw) {
+    say('Ouverture de la maquette…', 'info');
+    return navigator.serviceWorker.register(BASE + 'sw.js', { scope: BASE })
+      .then(actif)
+      .then(function (worker) {
+        if (!worker) throw new Error('aucun service worker actif');
+        return parler(worker, { type: 'ouvrir', raw: raw || null });
+      })
+      .then(function (rep) {
+        if (rep && !rep.ok) return bloque(rep.raison || 'le service worker ne déchiffre pas le site');
+        if (guard() > 3) {
+          return bloque(rep ? 'la page rechargée ne passe pas par le service worker'
+                            : 'le service worker ne répond pas');
+        }
+        location.reload();   // `rep === null` : worker muet (ancienne version) — on recharge, comme avant
+      })
+      .catch(function (err) {
+        go.disabled = false;
+        say("Le navigateur a refusé d’ouvrir la maquette. Réessayez dans une fenêtre normale (hors navigation privée).", null, nom(err) + (err && err.message && err.name ? ' — ' + err.message : ''));
+      });
+  }
+
+  // 1) Clé déjà déposée sur cet appareil → on ouvre sans redemander le mot de passe.
+  //    Une clé à l'ancien format (`rec.key`, une CryptoKey) est oubliée : c'est précisément
+  //    celle que le worker de Safari ne savait pas relire, et la garder bloquerait pour
+  //    toujours qui l'a rangée. Le mot de passe est redemandé une fois.
+  idbGet().then(function (rec) {
+    if (rec && !rec.raw) { idbClear(); rec = null; }
+    if (!rec) { setTimeout(function () { pwd.focus(); }, 50); return; }
+    say('Ouverture de la maquette…', 'info');
+    return importer(rec.raw).then(verify).then(function () { return activate(rec.raw); }, function (err) {
+      if (err && err.net) { say('Contenu momentanément indisponible. Rechargez la page.'); return; }
+      return idbClear().then(function () { say(''); pwd.focus(); });
+    });
+  });
+
+  // 2) Saisie du mot de passe.
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!pwd.value) return;
+    go.disabled = true;
+    say('Vérification…', 'info');
+    // Le compteur n'arrête que les rechargements AUTOMATIQUES : une saisie est un nouvel
+    // essai. Sans ça, retaper le mot de passe juste après un échec était refusé d'office.
+    try { sessionStorage.removeItem(GUARD); } catch (e) {}
+
+    derive(pwd.value)
+      .then(function (raw) {
+        return importer(raw).then(verify).then(function () {
+          // Un rangement refusé (stockage bloqué) n'empêche pas d'ouvrir : le worker reçoit
+          // la clé par message. Il faudra seulement ressaisir le mot de passe plus tard.
+          return idbPut({ raw: raw, at: Date.now() }).catch(function () {}).then(function () {
+            return activate(raw);
+          });
+        });
+      })
+      .catch(function (err) {
+        go.disabled = false;
+        if (err && err.net) { say('Contenu momentanément indisponible. Rechargez la page.'); return; }
+        say('Mot de passe incorrect.');
+        pwd.select();
+      });
+  });
+
+  peek.addEventListener('click', function () {
+    var shown = pwd.type === 'text';
+    pwd.type = shown ? 'password' : 'text';
+    peek.setAttribute('aria-label', shown ? 'Afficher le mot de passe' : 'Masquer le mot de passe');
+    pwd.focus();
+  });
+})();
+</script>
+</body>
+</html>
